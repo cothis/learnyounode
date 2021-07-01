@@ -1,0 +1,1 @@
+console.log(process.argv.slice(2).reduce((total, curr) => total += parseInt(curr), 0));
