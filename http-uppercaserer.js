@@ -1,8 +1,6 @@
 'use strict'
 const http = require('http');
-const map = require('through2-map');
 const port = Number(process.argv[2]);
-let data = '';
 
 http.createServer((req, res) => {
     if (req.method.toUpperCase() !== 'POST') {
@@ -10,6 +8,8 @@ http.createServer((req, res) => {
     }
 
     req.setEncoding('utf8');
-
-    req.pipe(map(chunk => chunk.toString().toUpperCase())).pipe(res);
+    req.on('data', chunk => {
+        res.write(chunk.toString().toUpperCase());
+    })
+    req.on('end', () => res.end());
 }).listen(port);
